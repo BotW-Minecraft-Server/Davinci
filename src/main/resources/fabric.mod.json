@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "davinci",
+  "version": "${version}",
+  "name": "Davinci",
+  "description": "A GUI mod that brings some awesome elements",
+  "authors": [
+    "Sam_Chai"
+  ],
+  "contact": {
+    "repo": "https://github.com/BotW-Minecraft-Server/Davinci"
+  },
+  "license": "MIT",
+  "icon": "assets/davinci/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "link.botwmcs.davinci.client.DavinciClient"
+    ],
+    "main": [
+      "link.botwmcs.davinci.Davinci"
+    ]
+  },
+  "mixins": [
+    "davinci.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
