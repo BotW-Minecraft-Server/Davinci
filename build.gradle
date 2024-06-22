@@ -20,6 +20,10 @@ repositories {
         name = 'ParchmentMC'
         url = 'https://maven.parchmentmc.org'
     }
+    maven {
+        name = "Fuzs Mod Resources"
+        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+    }
 }
 
 dependencies {
@@ -33,6 +37,10 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // FCAP Support
+    modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.fcap_version}"
+    include "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.fcap_version}"
 }
 
 processResources {

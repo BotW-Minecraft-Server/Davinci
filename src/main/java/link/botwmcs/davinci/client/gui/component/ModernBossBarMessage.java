@@ -2,6 +2,7 @@ package link.botwmcs.davinci.client.gui.component;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import link.botwmcs.davinci.Davinci;
+import link.botwmcs.davinci.client.gui.component.util.LerpedFloatCalculator;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;

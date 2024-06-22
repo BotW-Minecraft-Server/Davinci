@@ -5,6 +5,7 @@ import link.botwmcs.davinci.client.gui.component.TrainBarMessage;
 import link.botwmcs.davinci.network.s2c.SendModernBossBarMessage;
 import link.botwmcs.davinci.network.s2c.SendSystemToastMessage;
 import link.botwmcs.davinci.network.s2c.SendTrainBarMessage;
+import link.botwmcs.davinci.network.s2c.ShowDemo;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -14,6 +15,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class SendComponentUtil {
+    public static void showDemo(ServerPlayer player) {
+        ServerPlayNetworking.send(player, new ShowDemo("Demo"));
+    }
     public static void cleanAllComponents(ServerPlayer player) {
         if (ModernBossBarMessage.isEnabled()) {
             ServerPlayNetworking.send(player, new SendModernBossBarMessage("", 0));

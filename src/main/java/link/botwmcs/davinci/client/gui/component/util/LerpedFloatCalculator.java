@@ -1,4 +1,4 @@
-package link.botwmcs.davinci.client.gui.component;
+package link.botwmcs.davinci.client.gui.component.util;
 
 import net.minecraft.util.Mth;
 
