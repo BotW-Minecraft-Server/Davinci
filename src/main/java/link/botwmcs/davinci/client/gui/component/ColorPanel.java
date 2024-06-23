@@ -19,7 +19,9 @@ public class ColorPanel {
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
         guiGraphics.blitNineSliced(BACKGROUND_TEXTURE, startX, startY, width, height, sliceWidth, sliceHeight, defaultPanelWidth, defaultPanelHeight, 0, 0);
-
+        guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.disableBlend();
+        RenderSystem.disableDepthTest();
     }
 
 }

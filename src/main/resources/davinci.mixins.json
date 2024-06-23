@@ -6,7 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "BossHealthOverlayMixin"
+    "BossHealthOverlayMixin",
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

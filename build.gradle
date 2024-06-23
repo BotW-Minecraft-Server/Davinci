@@ -24,6 +24,10 @@ repositories {
         name = "Fuzs Mod Resources"
         url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
     }
+    maven {
+        name = "CottonMC"
+        url = "https://server.bbkr.space/artifactory/libs-release"
+    }
 }
 
 dependencies {
@@ -41,6 +45,11 @@ dependencies {
     // FCAP Support
     modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.fcap_version}"
     include "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.fcap_version}"
+
+    // LibGUI
+    modImplementation "io.github.cottonmc:LibGui:${project.libgui_version}"
+    include "io.github.cottonmc:LibGui:${project.libgui_version}"
+
 }
 
 processResources {
