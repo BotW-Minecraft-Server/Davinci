@@ -12,5 +12,7 @@
   "menu.copyright.mojang": "About Minecraft",
   "menu.copyright.ltsx": "About LTSX",
   "menu.copyright.apple.tooltip": "｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡",
-  "menu.copyright.mojang.tooltip": "See Mojang Copyright"
+  "menu.copyright.mojang.tooltip": "See Mojang Copyright",
+  "menu.options.title": "Options",
+  "menu.options.interface": "Interface..."
 }
