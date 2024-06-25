@@ -6,10 +6,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.FrameLayout;
 import net.minecraft.client.gui.layouts.GridLayout;
-import net.minecraft.client.gui.screens.AccessibilityOptionsScreen;
-import net.minecraft.client.gui.screens.ChatOptionsScreen;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.SkinCustomizationScreen;
+import net.minecraft.client.gui.screens.*;
 import net.minecraft.network.chat.Component;
 
 import java.util.function.Supplier;
@@ -32,7 +29,7 @@ public class InterfaceOptionsScreen extends Screen {
         rowHelper.addChild(this.openScreenButton(Component.translatable("options.chat.title"), () -> new ChatOptionsScreen(this, this.options)));
         rowHelper.addChild(this.openScreenButton(Component.translatable("options.skinCustomisation"), () -> new SkinCustomizationScreen(this, this.options)));
         rowHelper.addChild(this.openScreenButton(Component.translatable("options.accessibility.title"), () -> new AccessibilityOptionsScreen(this, this.options)));
-
+        rowHelper.addChild(this.openScreenButton(Component.translatable("options.sounds"), () -> new SoundOptionsScreen(this, this.options)));
 
         gridLayout.arrangeElements();
         FrameLayout.alignInRectangle(gridLayout, 0, this.height / 6 - 12, this.width, this.height, 0.5f, 0.0f);

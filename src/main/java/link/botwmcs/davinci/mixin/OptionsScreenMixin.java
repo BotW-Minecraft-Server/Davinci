@@ -2,6 +2,7 @@ package link.botwmcs.davinci.mixin;
 
 import link.botwmcs.davinci.client.gui.screen.ltsx.LtsxOptionsScreen;
 import link.botwmcs.davinci.client.gui.screen.ltsx.LtsxTitleScreen;
+import link.botwmcs.davinci.config.CommonConfig;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.OptionsScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -31,6 +32,8 @@ public abstract class OptionsScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("HEAD"))
     public void init(CallbackInfo ci) {
-        this.minecraft.setScreen(new LtsxOptionsScreen(lastScreen, options));
+        if (CommonConfig.CONFIG.enableLtsxComponents.get()) {
+            this.minecraft.setScreen(new LtsxOptionsScreen(lastScreen, options));
+        }
     }
 }

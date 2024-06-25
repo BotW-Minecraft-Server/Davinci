@@ -53,7 +53,7 @@ public class LtsxOptionsScreen extends Screen {
         rowHelper.addChild(this.openScreenButton(Component.translatable("menu.titlescreen.account"), 0xFF008FE1, () -> new LtsxOptionsScreen(this, this.options)));
         rowHelper.addChild(SpacerElement.height(26), 2);
 //        rowHelper.addChild(this.openScreenButton(SKIN_CUSTOMIZATION, () -> new SkinCustomizationScreen(this, this.options)));
-//        rowHelper.addChild(this.openScreenButton(SOUNDS, () -> new SoundOptionsScreen(this, this.options)));
+
         rowHelper.addChild(this.openScreenButton(Component.translatable("menu.options.interface"), DEFAULT_COLOR, () -> new InterfaceOptionsScreen(this, this.options)));
         rowHelper.addChild(this.openScreenButton(VIDEO, () -> new VideoSettingsScreen(this, this.options)));
         rowHelper.addChild(this.openScreenButton(CONTROLS, () -> new ControlsScreen(this, this.options)));
