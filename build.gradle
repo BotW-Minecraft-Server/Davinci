@@ -28,6 +28,9 @@ repositories {
         name = "CottonMC"
         url = "https://server.bbkr.space/artifactory/libs-release"
     }
+    flatDir {
+        dir 'libs'
+    }
 }
 
 dependencies {
@@ -49,6 +52,9 @@ dependencies {
     // LibGUI
     modImplementation "io.github.cottonmc:LibGui:${project.libgui_version}"
     include "io.github.cottonmc:LibGui:${project.libgui_version}"
+
+    // CSL
+    modImplementation "customskinloader:CustomSkinLoader_Fabric:${project.csl_version}"
 
 }
 
