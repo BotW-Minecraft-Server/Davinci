@@ -1,5 +1,6 @@
 package link.botwmcs.davinci.client.gui.screen.ltsx;
 
+import com.terraformersmc.modmenu.gui.ModsScreen;
 import link.botwmcs.davinci.client.gui.component.ColorButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -37,6 +38,7 @@ public class LtsxOptionsScreen extends Screen {
     private final Options options;
     private CycleButton<Difficulty> difficultyButton;
     private LockIconButton lockButton;
+    private Button modButton;
 
     public LtsxOptionsScreen(Screen lastScreen, Options options) {
         super(Component.literal("LTSX Options Screen"));
@@ -50,18 +52,42 @@ public class LtsxOptionsScreen extends Screen {
         gridLayout.defaultCellSetting().paddingHorizontal(5).paddingBottom(4).alignHorizontallyCenter();
         GridLayout.RowHelper rowHelper = gridLayout.createRowHelper(2);
         rowHelper.addChild(this.options.fov().createButton(this.minecraft.options, 0, 0, 150));
-        rowHelper.addChild(this.openScreenButton(Component.translatable("menu.titlescreen.account"), 0xFF008FE1, () -> new LtsxOptionsScreen(this, this.options)));
-        rowHelper.addChild(SpacerElement.height(26), 2);
-//        rowHelper.addChild(this.openScreenButton(SKIN_CUSTOMIZATION, () -> new SkinCustomizationScreen(this, this.options)));
+        if (this.minecraft.level != null && this.minecraft.hasSingleplayerServer()) {
+            this.difficultyButton = OptionsScreen.createDifficultyButton(0, 0, "options.difficulty", this.minecraft);
+            if (!this.minecraft.level.getLevelData().isHardcore()) {
+                this.lockButton = new LockIconButton(0, 0, button -> this.minecraft.setScreen(new ConfirmScreen(this::lockCallback, Component.translatable("difficulty.lock.title"), Component.translatable("difficulty.lock.question", this.minecraft.level.getLevelData().getDifficulty().getDisplayName()))));
+                this.difficultyButton.setWidth(this.difficultyButton.getWidth() - this.lockButton.getWidth());
+                this.lockButton.setLocked(this.minecraft.level.getLevelData().isDifficultyLocked());
+                this.lockButton.active = !this.lockButton.isLocked();
+                this.difficultyButton.active = !this.lockButton.isLocked();
+                LinearLayout linearLayout = new LinearLayout(150, 0, LinearLayout.Orientation.HORIZONTAL);
+                linearLayout.addChild(this.difficultyButton);
+                linearLayout.addChild(this.lockButton);
+                rowHelper.addChild(linearLayout);
+            } else {
+                this.difficultyButton.active = false;
+                rowHelper.addChild(this.difficultyButton);
+            }
+        } else {
+            rowHelper.addChild(this.openScreenButton(Component.translatable("menu.titlescreen.account"), 0xFF008FE1, () -> new LtsxOptionsScreen(this, this.options)));
+        }
 
+        rowHelper.addChild(SpacerElement.height(26), 2);
         rowHelper.addChild(this.openScreenButton(Component.translatable("menu.options.interface"), DEFAULT_COLOR, () -> new InterfaceOptionsScreen(this, this.options)));
         rowHelper.addChild(this.openScreenButton(VIDEO, () -> new VideoSettingsScreen(this, this.options)));
         rowHelper.addChild(this.openScreenButton(CONTROLS, () -> new ControlsScreen(this, this.options)));
         rowHelper.addChild(this.openScreenButton(LANGUAGE, () -> new LanguageSelectScreen((Screen)this, this.options, this.minecraft.getLanguageManager())));
-//        rowHelper.addChild(this.openScreenButton(CHAT, () -> new ChatOptionsScreen(this, this.options)));
         rowHelper.addChild(this.openScreenButton(RESOURCEPACK, () -> new PackSelectionScreen(this.minecraft.getResourcePackRepository(), this::applyPacks, this.minecraft.getResourcePackDirectory(), Component.translatable("resourcePack.title"))));
         rowHelper.addChild(this.openScreenButton(TELEMETRY, () -> new LtsxTelemetryScreen(this, this.options)));
         rowHelper.addChild(this.openScreenButton(CREDITS_AND_ATTRIBUTION, () -> new CopyrightScreen(this)));
+        this.modButton = new ColorButton(0, 0, 150, 20, Component.translatable("menu.options.mod"), DEFAULT_COLOR, button -> this.minecraft.setScreen(new ConfirmScreen(this::modCallback, Component.translatable("menu.options.mod.title"), Component.translatable("menu.options.mod.question"))));
+        if (this.minecraft.level == null) {
+            if (this.lastScreen instanceof ModsScreen) {
+                this.modButton.active = false;
+            }
+        }
+        rowHelper.addChild(this.modButton);
+
         rowHelper.addChild(Button.builder(CommonComponents.GUI_DONE, button -> this.minecraft.setScreen(this.lastScreen)).width(200).build(), 2, rowHelper.newCellSettings().paddingTop(6));
         gridLayout.arrangeElements();
         FrameLayout.alignInRectangle(gridLayout, 0, this.height / 6 - 12, this.width, this.height, 0.5f, 0.0f);
@@ -94,26 +120,6 @@ public class LtsxOptionsScreen extends Screen {
         this.minecraft.setScreen(this);
     }
 
-    private LayoutElement createOnlineButton() {
-        if (this.minecraft.level != null && this.minecraft.hasSingleplayerServer()) {
-            this.difficultyButton = OptionsScreen.createDifficultyButton(0, 0, "options.difficulty", this.minecraft);
-            if (!this.minecraft.level.getLevelData().isHardcore()) {
-                this.lockButton = new LockIconButton(0, 0, button -> this.minecraft.setScreen(new ConfirmScreen(this::lockCallback, Component.translatable("difficulty.lock.title"), Component.translatable("difficulty.lock.question", this.minecraft.level.getLevelData().getDifficulty().getDisplayName()))));
-                this.difficultyButton.setWidth(this.difficultyButton.getWidth() - this.lockButton.getWidth());
-                this.lockButton.setLocked(this.minecraft.level.getLevelData().isDifficultyLocked());
-                this.lockButton.active = !this.lockButton.isLocked();
-                this.difficultyButton.active = !this.lockButton.isLocked();
-                LinearLayout linearLayout = new LinearLayout(150, 0, LinearLayout.Orientation.HORIZONTAL);
-                linearLayout.addChild(this.difficultyButton);
-                linearLayout.addChild(this.lockButton);
-                return linearLayout;
-            }
-            this.difficultyButton.active = false;
-            return this.difficultyButton;
-        }
-        return Button.builder(Component.translatable("options.online"), button -> this.minecraft.setScreen(OnlineOptionsScreen.createOnlineOptionsScreen(this.minecraft, this, this.options))).bounds(this.width / 2 + 5, this.height / 6 - 12 + 24, 150, 20).build();
-    }
-
     private void lockCallback(boolean value) {
         this.minecraft.setScreen(this);
         if (value && this.minecraft.level != null) {
@@ -121,6 +127,13 @@ public class LtsxOptionsScreen extends Screen {
             this.lockButton.setLocked(true);
             this.lockButton.active = false;
             this.difficultyButton.active = false;
+        }
+    }
+
+    private void modCallback(boolean value) {
+        this.minecraft.setScreen(this);
+        if (value) {
+            this.minecraft.setScreen(new ModsScreen(this));
         }
     }
 }

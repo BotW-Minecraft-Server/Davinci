@@ -28,6 +28,10 @@ repositories {
         name = "CottonMC"
         url = "https://server.bbkr.space/artifactory/libs-release"
     }
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
 }
 
 dependencies {
@@ -49,6 +53,9 @@ dependencies {
     // LibGUI
     modImplementation "io.github.cottonmc:LibGui:${project.libgui_version}"
     include "io.github.cottonmc:LibGui:${project.libgui_version}"
+
+    // ModMenu
+    modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 
 }
 
