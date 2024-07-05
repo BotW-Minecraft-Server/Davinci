@@ -66,6 +66,20 @@ public class AnnounceCommand {
                                 )
                         )
                 )
+                .then(Commands.literal("island")
+                        .then(Commands.argument("target", EntityArgument.players())
+                                .then(Commands.argument("component", StringArgumentType.string())
+                                        .then(Commands.argument("stayTime", IntegerArgumentType.integer(1))
+                                                .executes(context -> {
+                                                    EntityArgument.getPlayers(context, "target").forEach(player -> {
+                                                        SendComponentUtil.sendDynamicIslandMessage(player, StringArgumentType.getString(context, "component"), IntegerArgumentType.getInteger(context, "stayTime"));
+                                                    });
+                                                    return 1;
+                                                })
+                                        )
+                                )
+                        )
+                )
         );
     }
 }

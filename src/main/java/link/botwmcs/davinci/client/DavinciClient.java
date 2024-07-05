@@ -1,5 +1,6 @@
 package link.botwmcs.davinci.client;
 
+import link.botwmcs.davinci.client.gui.component.DynamicIsland;
 import link.botwmcs.davinci.client.gui.component.ModernBossBarMessage;
 import link.botwmcs.davinci.client.gui.component.TrainBarMessage;
 import link.botwmcs.davinci.network.S2CHandler;
@@ -26,6 +27,8 @@ public class DavinciClient implements ClientModInitializer {
             ModernBossBarMessage.getInstance().render(matrixStack, tickDelta);
             TrainBarMessage.getInstance().tick();
             TrainBarMessage.getInstance().render(matrixStack, tickDelta);
+            DynamicIsland.getInstance().tick();
+            DynamicIsland.getInstance().render(matrixStack, tickDelta);
         });
     }
 }

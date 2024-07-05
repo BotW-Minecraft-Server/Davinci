@@ -1,12 +1,10 @@
 package link.botwmcs.davinci.network;
 
+import link.botwmcs.davinci.client.gui.component.DynamicIsland;
 import link.botwmcs.davinci.client.gui.component.ModernBossBarMessage;
 import link.botwmcs.davinci.client.gui.component.TrainBarMessage;
 import link.botwmcs.davinci.client.gui.screen.DemoScreen;
-import link.botwmcs.davinci.network.s2c.SendModernBossBarMessage;
-import link.botwmcs.davinci.network.s2c.SendSystemToastMessage;
-import link.botwmcs.davinci.network.s2c.SendTrainBarMessage;
-import link.botwmcs.davinci.network.s2c.ShowDemo;
+import link.botwmcs.davinci.network.s2c.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -25,6 +23,7 @@ public class S2CHandler {
             ClientPlayNetworking.registerReceiver(SendModernBossBarMessage.TYPE, S2CHandler::sendModernBossBarMessage);
             ClientPlayNetworking.registerReceiver(SendTrainBarMessage.TYPE, S2CHandler::sendTrainBarMessage);
             ClientPlayNetworking.registerReceiver(ShowDemo.TYPE, S2CHandler::showDemo);
+            ClientPlayNetworking.registerReceiver(SendIslandMessage.TYPE, S2CHandler::sendIslandMessage);
         });
     }
 
@@ -50,6 +49,12 @@ public class S2CHandler {
     @Environment(EnvType.CLIENT)
     private static void showDemo(ShowDemo packet, Player player, PacketSender sender) {
         Minecraft.getInstance().setScreen(new DemoScreen(Component.literal(packet.component())));
+    }
+    @Environment(EnvType.CLIENT)
+    private static void sendIslandMessage(SendIslandMessage packet, Player player, PacketSender sender) {
+        Minecraft.getInstance().execute(() -> {
+            DynamicIsland.getInstance().onShowIsland(Component.literal(packet.component()), packet.stayTime() * 20 + 100);
+        });
     }
 
 }

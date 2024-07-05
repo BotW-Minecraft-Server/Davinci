@@ -18,11 +18,21 @@ public class TrainBarMessage {
     private static boolean enabled;
     private static int tick = 0;
     private static LerpedFloatCalculator componentSize = LerpedFloatCalculator.linear();
-    private static TrainBarMessage instance = new TrainBarMessage();
+    private static int x;
+    private static int y;
 
     public void onShowHUDMessage(Component component, int hiddenTick) {
         currentComponent = component;
         tick = hiddenTick;
+        x = 0;
+        y = 0;
+    }
+
+    public void onShowHUDMessage(Component component, int hiddenTick, int guiX, int guiY) {
+        currentComponent = component;
+        tick = hiddenTick;
+        x = guiX;
+        y = guiY;
     }
 
     public void tick() {
@@ -42,12 +52,18 @@ public class TrainBarMessage {
         }
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
-        poseStack.translate(minecraft.getWindow().getGuiScaledWidth() / 2 - 91, minecraft.getWindow().getGuiScaledHeight() - 29, 0);
+        poseStack.translate(minecraft.getWindow().getGuiScaledWidth() / 2 - 91 + x, minecraft.getWindow().getGuiScaledHeight() - 29 + y, 0);
+//        poseStack.translate(x, y, 0);
+
         int size = (int) componentSize.getValue(tickDelta);
         if (size > 1) {
             enabled = true;
             poseStack.pushPose();
-            poseStack.translate(size / -2F + 91, -27, 100);
+            if (DynamicIsland.isIslandEnabled()) {
+                poseStack.translate(size / -2F + 91, -50, 100);
+            } else {
+                poseStack.translate(size / -2F + 91, -27, 100);
+            }
             // left blank
             ResourceLocation createWidgets = new ResourceLocation(Davinci.MODID, "textures/gui/widgets.png");
             guiGraphics.blit(createWidgets, -3, 0, 8, 40, 3, 16, 256, 256);
@@ -61,7 +77,11 @@ public class TrainBarMessage {
             Font font = minecraft.font;
             if (currentComponent != null && font.width(currentComponent) < size - 10) {
                 poseStack.pushPose();
-                poseStack.translate(font.width(currentComponent) / 2F + 82, -27, 100);
+                if (DynamicIsland.isIslandEnabled()) {
+                    poseStack.translate(font.width(currentComponent) / 2F + 82, -50, 100);
+                } else {
+                    poseStack.translate(font.width(currentComponent) / 2F + 82, -27, 100);
+                }
                 guiGraphics.drawCenteredString(font, currentComponent, 9 - font.width(currentComponent) / 2, 4, 0xFFFFFF);
                 poseStack.popPose();
             }
@@ -74,10 +94,10 @@ public class TrainBarMessage {
 
 
     }
-
     public static TrainBarMessage getInstance() {
-        return instance;
+        return new TrainBarMessage();
     }
+
     public static boolean isEnabled() {
         return enabled;
     }

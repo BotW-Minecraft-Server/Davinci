@@ -2,12 +2,10 @@ package link.botwmcs.davinci.util;
 
 import link.botwmcs.davinci.client.gui.component.ModernBossBarMessage;
 import link.botwmcs.davinci.client.gui.component.TrainBarMessage;
-import link.botwmcs.davinci.network.s2c.SendModernBossBarMessage;
-import link.botwmcs.davinci.network.s2c.SendSystemToastMessage;
-import link.botwmcs.davinci.network.s2c.SendTrainBarMessage;
-import link.botwmcs.davinci.network.s2c.ShowDemo;
+import link.botwmcs.davinci.network.s2c.*;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -54,6 +52,20 @@ public class SendComponentUtil {
             String component = list.get(i);
             int delay = stayTime * i;
             scheduler.schedule(() -> sendModernBossBarMessage(serverPlayer, component, stayTime + 100), delay, TimeUnit.SECONDS);
+        }
+        scheduler.shutdown();
+    }
+
+    public static void sendDynamicIslandMessage(ServerPlayer player, String component, int stayTime) {
+        ServerPlayNetworking.send(player, new SendIslandMessage(component, stayTime));
+    }
+
+    public static void sendDynamicIslandMessageList(ServerPlayer serverPlayer, List<String> list, int stayTime) {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        for (int i = 0; i < list.size(); i++) {
+            String component = list.get(i);
+            int delay = stayTime * i;
+            scheduler.schedule(() -> sendDynamicIslandMessage(serverPlayer, component, stayTime + 100), delay, TimeUnit.SECONDS);
         }
         scheduler.shutdown();
     }
